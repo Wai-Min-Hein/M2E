@@ -240,7 +240,7 @@ const Home = () => {
   
 
   return (
-    <div className="w-screen">
+    <div className="w-screen relative min-h-screen overflow-hidden">
       <div className="mt-4 flex items-center justify-center gap-4">
         <div className="flex items-center justify-center gap-1">
           <input
@@ -292,6 +292,7 @@ const Home = () => {
           </p>
         </div>
       )}
+      <p className="absolute bottom-0 left-1/2 mb-2" >IDEA BY: <strong>ORRE</strong> </p>
     </div>
   );
 };
