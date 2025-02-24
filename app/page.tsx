@@ -1,101 +1,300 @@
-import Image from "next/image";
+"use client";
+import React, { useState } from "react";
 
-export default function Home() {
+const Home = () => {
+  const unicodeToTyped: Record<string, string> = {
+    // ` row (lowercase and uppercase)
+    ၐ: "`",
+    "၁": "1",
+    "၂": "2",
+    "၃": "3",
+    "၄": "4",
+    "၅": "5",
+    "၆": "6",
+    "၇": "7",
+    "၈": "8",
+    "၉": "9",
+    "၀": "0",
+    "-": "-",
+    "=": "=",
+
+    ဎ: "~",
+    ဍ: "!",
+    ၒ: "@",
+    ဋ: "#",
+    ၓ: "$",
+    ၔ: "%",
+    ၕ: "^",
+    ရ: "&",
+    "*": "*",
+    "(": "(",
+    ")": ")",
+    _: "_",
+    "+": "+",
+
+    // Q row (lowercase and uppercase)
+    ဆ: "q",
+    တ: "w",
+    န: "e",
+    မ: "r",
+    အ: "t",
+    ပ: "y",
+    က: "u",
+    င: "i",
+    သ: "o",
+    စ: "p",
+    ဟ: "[",
+    ဩ: "]",
+    "၏": '"',
+
+    ဈ: "Q",
+    ဝ: "W",
+    ဣ: "E",
+    "၎": "R",
+    ဤ: "T",
+    "၌": "Y",
+    ဥ: "U",
+    "၍": "I",
+    ဿ: "O",
+    ဏ: "P",
+    ဧ: "{",
+    ဪ: "}",
+    ၑ: "|",
+
+    // A row (lowercase and uppercase)
+    "‌ေ": "a",
+    "ျ": "s",
+    "ိ": "d",
+    "်": "f",
+    "ါ": "g",
+    "့": "h",
+    "ြ": "j",
+    "ု": "k",
+    "ူ": "l",
+    "း": ";",
+    "'": "'",
+
+    ဗ: "A",
+    "ှ": "S",
+    "ီ": "D",
+    "္": "F",
+    "ွ": "G",
+    "ံ": "H",
+    "ဲ": "J",
+    ဒ: "K",
+    ဓ: "L",
+    ဂ: ":",
+    '"': '"',
+
+    // Z row (lowercase and uppercase)
+    ဖ: "z",
+    ထ: "x",
+    ခ: "c",
+    လ: "v",
+    ဘ: "b",
+    ည: "n",
+    "ာ": "m",
+    ",": ",",
+    ".": ".",
+    "/": "/",
+
+    ဇ: "Z",
+    ဌ: "X",
+    ဃ: "C",
+    ဠ: "V",
+    ယ: "B",
+    ဉ: "N",
+    ဦ: "M",
+    "၊": "<",
+    "။": ">",
+    "?": "?",
+  };
+
+  const typedToUnicode: Record<string, string> = {
+    // ` row (lowercase and uppercase)
+    "`": "ၐ",
+    "1": "၁",
+    "2": "၂",
+    "3": "၃",
+    "4": "၄",
+    "5": "၅",
+    "6": "၆",
+    "7": "၇",
+    "8": "၈",
+    "9": "၉",
+    "0": "၀",
+    "-": "-",
+    "=": "=",
+
+    "~": "ဎ",
+    "!": "ဍ",
+    "@": "ၒ",
+    "#": "ဋ",
+    $: "ၓ",
+    "%": "ၔ",
+    "^": "ၕ",
+    "&": "ရ",
+    "*": "*",
+    "(": "(",
+    ")": ")",
+    _: "_",
+    "+": "+",
+
+    // Q row (lowercase and uppercase)
+    q: "ဆ",
+    w: "တ",
+    e: "န",
+    r: "မ",
+    t: "အ",
+    y: "ပ",
+    u: "က",
+    i: "င",
+    o: "သ",
+    p: "စ",
+    "[": "ဟ",
+    "]": "ဩ",
+    "\\": "၏",
+
+    Q: "ဈ",
+    W: "ဝ",
+    E: "ဣ",
+    R: "၎",
+    T: "ဤ",
+    Y: "၌",
+    U: "ဥ",
+    I: "၍",
+    O: "ဿ",
+    P: "ဏ",
+    "{": "ဧ",
+    "}": "ဪ",
+    "|": "ၑ",
+
+    // A row (lowercase and uppercase)
+    a: "‌ေ",
+    s: "ျ",
+    d: "ိ",
+    f: "်",
+    g: "ါ",
+    h: "့",
+    j: "ြ",
+    k: "ု",
+    l: "ူ",
+    ";": "း",
+    "'": "'",
+
+    A: "ဗ",
+    S: "ှ",
+    D: "ီ",
+    F: "္",
+    G: "ွ",
+    H: "ံ",
+    J: "ဲ",
+    K: "ဒ",
+    L: "ဓ",
+    ":": "ဂ",
+    '"': '"',
+
+    // Z row (lowercase and uppercase)
+    z: "ဖ",
+    x: "ထ",
+    c: "ခ",
+    v: "လ",
+    b: "ဘ",
+    n: "ည",
+    m: "ာ",
+    ",": ",",
+    ".": ".",
+    "/": "/",
+
+    Z: "ဇ",
+    X: "ဌ",
+    C: "ဃ",
+    V: "ဠ",
+    B: "ယ",
+    N: "ဉ",
+    M: "ဦ",
+    "<": "၊",
+    ">": "။",
+    "?": "?",
+  };
+
+  const [input, setInput] = useState<string>("");
+  const [changedType, setchangedType] = useState<string>("m2e");
+  const [convertedValue, setConvertedValue] = useState<string>("");
+  const handleClick = () => {
+    const convertedArray = [];
+    for (let i = 0; i < input.length; i++) {
+      const key = input[i];
+      let convertedChar;
+  
+      if (changedType === "m2e") {
+        convertedChar = unicodeToTyped[key] ?? key; // Keep original if not found
+      } else {
+        convertedChar = typedToUnicode[key] ?? key; // Keep original if not found
+      }
+  
+      convertedArray.push(convertedChar);
+    }
+    setConvertedValue(convertedArray.join(""));
+  };
+  
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="w-screen">
+      <div className="mt-4 flex items-center justify-center gap-3">
+        <div className="">
+          <input
+            type="radio"
+            id="m2e"
+            className="cursor-pointer"
+            name="type"
+            value={"m2e"}
+            onChange={(e) => setchangedType(e.target.value)}
+            defaultChecked
+          />
+          <label htmlFor="m2e" className="cursor-pointer">
+            Myanmar To English
+          </label>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div className="">
+          <input
+            type="radio"
+            id="e2m"
+            className="cursor-pointer"
+            name="type"
+            value={"e2m"}
+            onChange={(e) => setchangedType(e.target.value)}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <label htmlFor="e2m" className="cursor-pointer">
+            English To Myanmar
+          </label>
+        </div>
+      </div>
+      <div className="my-4 flex items-center justify-center gap-3">
+        <textarea
+          name=""
+          id=""
+          rows={8}
+          cols={80}
+          onChange={(e) => setInput(e.target.value)}
+          className="border border-gray-200 px-4 py-3 rounded-md"
+        ></textarea>
+        <button onClick={handleClick} className="cursor-pointer">
+          Submit
+        </button>
+      </div>
+      {convertedValue && (
+        <div className="flex items-center justify-center gap-3 w-4/5 mx-auto">
+          <p className="w-full text-center">
+            <span className="select-none block text-center my-4">
+              Converted Text :
+            </span>{" "}
+            <strong className="relative w-full block break-words">{convertedValue}</strong>{" "}
+          </p>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Home;
