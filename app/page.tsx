@@ -226,78 +226,87 @@ const Home = () => {
     for (let i = 0; i < input.length; i++) {
       const key = input[i];
       let convertedChar;
-  
+
       if (changedType === "m2e") {
         convertedChar = unicodeToTyped[key] ?? key; // Keep original if not found
       } else {
         convertedChar = typedToUnicode[key] ?? key; // Keep original if not found
       }
-  
+
       convertedArray.push(convertedChar);
     }
     setConvertedValue(convertedArray.join(""));
   };
-  
 
   return (
-    <div className="w-screen relative h-screen overflow-hidden">
-      <div className="mt-4 flex items-center justify-center gap-4">
-        <div className="flex items-center justify-center gap-1">
-          <input
-            type="radio"
-            id="m2e"
-            className="cursor-pointer"
-            name="type"
-            value={"m2e"}
-            onChange={(e) => setchangedType(e.target.value)}
-            defaultChecked
-          />
-          <label htmlFor="m2e" className="cursor-pointer">
-            Myanmar To English
-          </label>
+    <main className="w-screen relative h-screen overflow-hidden flex flex-col ">
+      <section className="flex-1">
+        <div className="mt-4 flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-1">
+            <input
+              type="radio"
+              id="m2e"
+              className="cursor-pointer"
+              name="type"
+              value={"m2e"}
+              onChange={(e) => setchangedType(e.target.value)}
+              defaultChecked
+            />
+            <label htmlFor="m2e" className="cursor-pointer">
+              Myanmar To English
+            </label>
+          </div>
+          <div className="flex items-center justify-center gap-1">
+            <input
+              type="radio"
+              id="e2m"
+              className="cursor-pointer"
+              name="type"
+              value={"e2m"}
+              onChange={(e) => setchangedType(e.target.value)}
+            />
+            <label htmlFor="e2m" className="cursor-pointer">
+              English To Myanmar
+            </label>
+          </div>
         </div>
-        <div className="flex items-center justify-center gap-1">
-          <input
-            type="radio"
-            id="e2m"
-            className="cursor-pointer"
-            name="type"
-            value={"e2m"}
-            onChange={(e) => setchangedType(e.target.value)}
-          />
-          <label htmlFor="e2m" className="cursor-pointer">
-            English To Myanmar
-          </label>
+        <div className="my-4 flex flex-col items-center justify-center gap-3">
+          <textarea
+            name=""
+            id=""
+            rows={8}
+            onChange={(e) => setInput(e.target.value)}
+            className="border border-gray-200 px-4 py-3 rounded-md w-4/5 md:w-2/3 lg:w-1/2"
+          ></textarea>
+          <button
+            onClick={handleClick}
+            className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Submit
+          </button>
         </div>
-      </div>
-      <div className="my-4 flex flex-col items-center justify-center gap-3">
-        <textarea
-          name=""
-          id=""
-          rows={8}
-          onChange={(e) => setInput(e.target.value)}
-          className="border border-gray-200 px-4 py-3 rounded-md w-4/5 md:w-2/3 lg:w-1/2"
-        ></textarea>
-        <button onClick={handleClick} className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md">
-          Submit
-        </button>
-      </div>
-      {convertedValue && (
-        <div className="flex items-center justify-center gap-3 w-4/5 mx-auto">
-          <p className="w-full text-center">
-            <span className="select-none block text-center my-4">
-              Converted Text :
-            </span>{" "}
-            <strong className="relative w-full block break-words">{convertedValue}</strong>{" "}
+        {convertedValue && (
+          <div className="flex items-center justify-center gap-3 w-4/5 mx-auto">
+            <p className="w-full text-center">
+              <span className="select-none block text-center my-4">
+                Converted Text :
+              </span>{" "}
+              <strong className="relative w-full block break-words">
+                {convertedValue}
+              </strong>{" "}
+            </p>
+          </div>
+        )}
+      </section>
+      <footer className="mb-8 text-center flex flex-col items-center justify-center gap-2 w-full">
+          <p className="">
+            DEVELOP BY: <strong>Wai Min Hein</strong>{" "}
           </p>
-        </div>
-      )}
-      <div className="absolute bottom-0 left-1/2 translate-x-[-50%] my-4 text-center flex flex-col items-center justify-center gap-2 w-full">
-
-      <p className="" >DEVELOP BY: <strong>Wai Min Hein</strong> </p>
-      <p className="" >IDEA BY: <strong>ORRE</strong> </p>
-      </div>
-    </div>
+          <p className="">
+            IDEA BY: <strong>ORRE</strong>{" "}
+          </p>
+      </footer>
+    </main>
   );
 };
 
