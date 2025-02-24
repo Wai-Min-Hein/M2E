@@ -241,8 +241,8 @@ const Home = () => {
 
   return (
     <div className="w-screen">
-      <div className="mt-4 flex items-center justify-center gap-3">
-        <div className="">
+      <div className="mt-4 flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-1">
           <input
             type="radio"
             id="m2e"
@@ -256,7 +256,7 @@ const Home = () => {
             Myanmar To English
           </label>
         </div>
-        <div className="">
+        <div className="flex items-center justify-center gap-1">
           <input
             type="radio"
             id="e2m"
@@ -270,16 +270,15 @@ const Home = () => {
           </label>
         </div>
       </div>
-      <div className="my-4 flex items-center justify-center gap-3">
+      <div className="my-4 flex flex-col items-center justify-center gap-3">
         <textarea
           name=""
           id=""
           rows={8}
-          cols={80}
           onChange={(e) => setInput(e.target.value)}
-          className="border border-gray-200 px-4 py-3 rounded-md"
+          className="border border-gray-200 px-4 py-3 rounded-md w-4/5 md:w-2/3 lg:w-1/2"
         ></textarea>
-        <button onClick={handleClick} className="cursor-pointer">
+        <button onClick={handleClick} className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md">
           Submit
         </button>
       </div>
