@@ -240,7 +240,7 @@ const Home = () => {
   
 
   return (
-    <div className="w-screen relative min-h-screen overflow-hidden">
+    <div className="w-screen relative h-screen overflow-hidden">
       <div className="mt-4 flex items-center justify-center gap-4">
         <div className="flex items-center justify-center gap-1">
           <input
@@ -292,7 +292,11 @@ const Home = () => {
           </p>
         </div>
       )}
-      <p className="absolute bottom-0 left-1/2 mb-2" >IDEA BY: <strong>ORRE</strong> </p>
+      <div className="absolute bottom-0 left-1/2 translate-x-[-50%] my-4 text-center flex flex-col items-center justify-center gap-2 w-full">
+
+      <p className="" >DEVELOP BY: <strong>Wai Min Hein</strong> </p>
+      <p className="" >IDEA BY: <strong>ORRE</strong> </p>
+      </div>
     </div>
   );
 };
