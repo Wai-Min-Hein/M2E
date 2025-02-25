@@ -239,8 +239,8 @@ const Home = () => {
     let convertedString = convertedArray.join("");
 
     // Swap 'jX' → 'Xj' and 'sX' → 'Xs' (X is any character except space)
-    convertedString = convertedString.replace(/(j)(.)/g, "$2$1"); // Swap 'j' with the next character
-    convertedString = convertedString.replace(/(s)(.)/g, "$2$1"); // Swap 's' with the next character
+    convertedString = convertedString.replace(/(.)(j)/g, "$2$1"); // Swap 'j' with the next character
+    convertedString = convertedString.replace(/(.)(s)/g, "$2$1"); // Swap 's' with the next character
   
     setConvertedValue(convertedString);
     // convert to pyidaungsu
