@@ -62,7 +62,7 @@ const Home = () => {
     ၑ: "|",
 
     // A row (lowercase and uppercase)
-    "‌ေ": "a",
+    "‌‌ေ": "a",
     "ျ": "s",
     "ိ": "d",
     "်": "f",
@@ -94,7 +94,7 @@ const Home = () => {
     ဘ: "b",
     ည: "n",
     "ာ": "m",
-    ",": ",",
+    ယ: ",",
     ".": ".",
     "/": "/",
 
@@ -102,7 +102,7 @@ const Home = () => {
     ဌ: "X",
     ဃ: "C",
     ဠ: "V",
-    ယ: "B",
+    // ယ: "B",
     ဉ: "N",
     ဦ: "M",
     "၊": "<",
@@ -202,7 +202,7 @@ const Home = () => {
     b: "ဘ",
     n: "ည",
     m: "ာ",
-    ",": ",",
+    ",": "ယ",
     ".": ".",
     "/": "/",
 
@@ -210,7 +210,7 @@ const Home = () => {
     X: "ဌ",
     C: "ဃ",
     V: "ဠ",
-    B: "ယ",
+    // B: "ယ",
     N: "ဉ",
     M: "ဦ",
     "<": "၊",
@@ -221,31 +221,47 @@ const Home = () => {
   const [input, setInput] = useState<string>("");
   const [changedType, setchangedType] = useState<string>("m2e");
   const [convertedValue, setConvertedValue] = useState<string>("");
+
   const handleClick = () => {
     const convertedArray = [];
     for (let i = 0; i < input.length; i++) {
-      const key = input[i];
+      let key = input[i].normalize("NFC"); // Normalize the character
+
+      key = key.replace(/\u200C/g, "");
+      let keyUnicode = [...key]
+        .map((c) => c.charCodeAt(0).toString(16))
+        .join(" ");
+
       let convertedChar;
 
       if (changedType === "m2e") {
-        convertedChar = unicodeToTyped[key] ?? key; // Keep original if not found
+        convertedChar = keyUnicode == "1031" ? "a" : unicodeToTyped[key] ?? key; // Keep original if not found
       } else {
         convertedChar = typedToUnicode[key] ?? key; // Keep original if not found
       }
 
       convertedArray.push(convertedChar);
     }
-    // // convert to pyidaungsu
-    // let convertedString = convertedArray.join("");
+    // convert to pyidaungsu
+    let convertedString = convertedArray.join("");
 
-    // // Swap 'jX' → 'Xj' and 'sX' → 'Xs' (X is any character except space)
-    // convertedString = convertedString.replace(/(.)(j)/g, "$2$1"); // Swap 'j' with the next character
-    // convertedString = convertedString.replace(/(.)(s)/g, "$2$1"); // Swap 's' with the next character
-  
-    // setConvertedValue(convertedString);
-    // // convert to pyidaungsu
-    
-    setConvertedValue(convertedArray.join(""));
+    // Swap 'jX' → 'Xj' and 'sX' → 'Xs' (X is any character except space)
+    convertedString = convertedString.replace(/(.)(j)/g, "$2$1"); // Swap 'j' with the front character
+    convertedString = convertedString.replace(/(.)(s)/g, "$2$1"); // Swap 's' with the front character
+    convertedString = convertedString.replace(/(.)(a)/g, "$2$1"); // Swap 'a' with the front character
+    convertedString = convertedString.replace(/(ေ)([က-အ])/g, "$2$1");
+
+    setConvertedValue(convertedString);
+    // convert to pyidaungsu
+  };
+
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(convertedValue);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Hide after 2 sec
   };
 
   return (
@@ -296,7 +312,7 @@ const Home = () => {
           </button>
         </div>
         {convertedValue && (
-          <div className="flex items-center justify-center gap-3 w-4/5 mx-auto">
+          <div className="flex flex-col items-center justify-center gap-3 w-4/5 mx-auto">
             <p className="w-full text-center">
               <span className="select-none block text-center my-4">
                 Converted Text :
@@ -305,16 +321,22 @@ const Home = () => {
                 {convertedValue}
               </strong>{" "}
             </p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition cursor-pointer"
+              onClick={handleCopy}
+            >
+              {copied? 'Copied': 'Copy'}
+            </button>
           </div>
         )}
       </section>
       <footer className="mb-8 text-center flex flex-col items-center justify-center gap-2 w-full">
-          <p className="">
-            DEVELOP BY: <strong>Wai Min Hein</strong>{" "}
-          </p>
-          <p className="">
-            IDEA BY: <strong>ORRE</strong>{" "}
-          </p>
+        <p className="">
+          DEVELOP BY: <strong>Wai Min Hein</strong>{" "}
+        </p>
+        <p className="">
+          IDEA BY: <strong>ORRE</strong>{" "}
+        </p>
       </footer>
     </main>
   );
