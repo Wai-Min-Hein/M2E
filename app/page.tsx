@@ -228,7 +228,7 @@ const Home = () => {
       let key = input[i].normalize("NFC"); // Normalize the character
 
       key = key.replace(/\u200C/g, "");
-      let keyUnicode = [...key]
+      const keyUnicode = [...key]
         .map((c) => c.charCodeAt(0).toString(16))
         .join(" ");
 
